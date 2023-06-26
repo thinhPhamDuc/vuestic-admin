@@ -12,6 +12,11 @@
     "format": "prettier --write .",
     "preview": "vite preview"
   },
+  "lint-staged": {
+    "./src/**/*.{ts,js,vue}": [
+      "npm run lint"
+    ]
+  },
   "dependencies": {
     "@amcharts/amcharts5": "^5.2.19",
     "@amcharts/amcharts5-geodata": "^5.0.3",
