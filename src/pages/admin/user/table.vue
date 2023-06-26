@@ -1,16 +1,22 @@
 <template>
   <div class="markup-tables flex">
     <va-card>
-      <div class="d-flex">
-        <va-button class="mr-auto ml-4 mt-3"> Filter </va-button>
+      <va-collapse class="mr-auto ml-4 mt-3">
+        <template #header>
+          <va-button class="mt-3">
+            Filter
+          </va-button>
+        </template>
+        <div class="pa-3">
+          <va-input
+            v-model="simple"
+            placeholder="Text Input"
+            label="Name"
+          />
+        </div>
+      </va-collapse>
+      <div class="d-flex" style="top: 0; right: 0;position: absolute">
         <va-button class="ml-auto mr-4 mt-3" @click="$router.push('manage-users')"> ADD </va-button>
-        <!--        <va-collapse :header="t('collapse.firstHeader')">-->
-        <!--          <div class="pa-3">-->
-        <!--            <div>-->
-        <!--              {{ t('collapse.content.text') }}-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--        </va-collapse>-->
       </div>
       <va-card-content>
         <div class="table-wrapper">
@@ -18,7 +24,7 @@
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Email</th>
+                <th>ChosenCountry</th>
                 <th>MultiSelectModel</th>
                 <th>MultiSearchableSelectModel</th>
                 <th>Status</th>
