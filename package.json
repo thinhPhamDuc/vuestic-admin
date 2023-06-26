@@ -12,11 +12,6 @@
     "format": "prettier --write .",
     "preview": "vite preview"
   },
-  "lint-staged": {
-    "./src/**/*.{ts,js,vue}": [
-      "npm run lint"
-    ]
-  },
   "dependencies": {
     "@amcharts/amcharts5": "^5.2.19",
     "@amcharts/amcharts5-geodata": "^5.0.3",
@@ -39,7 +34,7 @@
     "vue-i18n": "^9.1.10",
     "vue-router": "^4.0.14",
     "vue-yandex-maps": "^0.12.3",
-    "vuestic-ui": "^1.5.0"
+    "vuestic-ui": "^1.6.6"
   },
   "devDependencies": {
     "@intlify/vite-plugin-vue-i18n": "^5.0.1",

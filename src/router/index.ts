@@ -5,7 +5,6 @@ import AppLayout from '../layouts/AppLayout.vue'
 import Page404Layout from '../layouts/Page404Layout.vue'
 import PageTest from '../layouts/PageTest.vue'
 
-
 import RouteViewComponent from '../layouts/RouterBypass.vue'
 import UIRoute from '../pages/admin/ui/route'
 
@@ -23,6 +22,16 @@ const routes: Array<RouteRecordRaw> = [
         name: 'dashboard',
         path: 'dashboard',
         component: () => import('../pages/admin/dashboard/Dashboard.vue'),
+      },
+      {
+        name: 'manage-users',
+        path: 'manage-users',
+        component: () => import('../pages/admin/user/index.vue'),
+      },
+      {
+        name: 'table-users',
+        path: 'table-users',
+        component: () => import('../pages/admin/user/table.vue'),
       },
       {
         name: 'statistics',
@@ -219,10 +228,9 @@ const routes: Array<RouteRecordRaw> = [
         name: 'blank-page',
         path: 'blank-page',
         component: () => import('../pages/test/Test.vue'),
-      }
+      },
     ],
   },
-  
 ]
 
 const router = createRouter({

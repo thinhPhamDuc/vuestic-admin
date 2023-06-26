@@ -233,6 +233,8 @@
     "dateTimePicker": {
       "title": "Date time pickers",
       "basic": "Basic",
+      "from": "From",
+      "to": "To",
       "time": "Time",
       "range": "Range",
       "manualInput": "Manual input",
@@ -292,6 +294,7 @@
   },
   "menu": {
     "auth": "Auth",
+    "user": "Manage users",
     "rating": "Rating",
     "buttons": "Buttons",
     "charts": "Charts",

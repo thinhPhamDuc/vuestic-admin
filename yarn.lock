@@ -3511,10 +3511,10 @@
     "@vue/server-renderer" "3.2.37"
     "@vue/shared" "3.2.37"
 
-"vuestic-ui@^1.5.0":
-  "integrity" "sha512-zXjeV6/Q1btIVjvBjpUTaC0HBNKZ8Se5RTf9xky7uIjhMATpJDvt9nC7G2FbXIYcKJ/UVIKghk7JuPh0lKASNQ=="
-  "resolved" "https://registry.npmjs.org/vuestic-ui/-/vuestic-ui-1.5.0.tgz"
-  "version" "1.5.0"
+"vuestic-ui@^1.6.6":
+  "integrity" "sha512-4BVr3wabNLqYBcrbLqsWcE5M1yAGUSkvd2tluKDutMk2QoMu3cgKEA/oXAb1briuui4hwYQoXCWsZuT3s3zNsw=="
+  "resolved" "https://registry.npmjs.org/vuestic-ui/-/vuestic-ui-1.6.6.tgz"
+  "version" "1.6.6"
   dependencies:
     "@types/lodash" "^4.14.161"
     "cleave.js" "^1.6.0"

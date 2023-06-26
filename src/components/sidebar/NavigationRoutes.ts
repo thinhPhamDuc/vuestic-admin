@@ -19,6 +19,13 @@ export default {
       },
     },
     {
+      name: 'table-users',
+      displayName: 'menu.user',
+      meta: {
+        icon: 'vuestic-iconset-dashboard',
+      },
+    },
+    {
       name: 'statistics',
       displayName: 'menu.statistics',
       meta: {

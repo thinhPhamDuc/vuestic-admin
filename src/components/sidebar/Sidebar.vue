@@ -1,7 +1,7 @@
 <template>
   <va-sidebar :width="width" :minimized="minimized" :minimized-width="minimizedWidth" :animated="animated">
-    <menu-minimized v-if="minimized" :items="items" />
-    <menu-accordion v-else :items="items" />
+    <MenuMinimized v-if="minimized" :items="items" />
+    <MenuAccordion v-else :items="items" />
   </va-sidebar>
 </template>
 
