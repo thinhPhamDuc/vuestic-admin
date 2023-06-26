@@ -3511,6 +3511,11 @@
     "@vue/server-renderer" "3.2.37"
     "@vue/shared" "3.2.37"
 
+"vuelidate@^0.7.7":
+  "integrity" "sha512-pT/U2lDI67wkIqI4tum7cMSIfGcAMfB+Phtqh2ttdXURwvHRBJEAQ0tVbUsW9Upg83Q5QH59bnCoXI7A9JDGnA=="
+  "resolved" "https://registry.npmjs.org/vuelidate/-/vuelidate-0.7.7.tgz"
+  "version" "0.7.7"
+
 "vuestic-ui@^1.6.6":
   "integrity" "sha512-4BVr3wabNLqYBcrbLqsWcE5M1yAGUSkvd2tluKDutMk2QoMu3cgKEA/oXAb1briuui4hwYQoXCWsZuT3s3zNsw=="
   "resolved" "https://registry.npmjs.org/vuestic-ui/-/vuestic-ui-1.6.6.tgz"
