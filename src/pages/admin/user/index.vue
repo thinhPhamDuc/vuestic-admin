@@ -9,7 +9,8 @@
               <div class="flex md4 sm6 xs12">
                 <va-input
                   v-model="simple"
-                  placeholder="Text Input" label="Name"
+                  placeholder="Text Input"
+                  label="Name"
                   :rules="[(value) => (value && value.length > 0) || 'Name is required']"
                 />
               </div>
@@ -36,7 +37,7 @@
                   text-by="description"
                   track-by="id"
                   :options="simpleOptions"
-                  :rules="[(value) => (value) || 'Simple select is required']"
+                  :rules="[(value) => value || 'Simple select is required']"
                 />
               </div>
               <div class="flex md6 xs12">
@@ -75,7 +76,7 @@
                   text-by="description"
                   track-by="id"
                   :options="simpleOptions"
-                  :rules="[(value) => (value) || 'Country search select is required']"
+                  :rules="[(value) => value || 'Country search select is required']"
                 />
               </div>
               <div class="flex md6 xs12">
@@ -102,9 +103,7 @@
                   class="d-flex align-items-center text-center mt-2"
                 />
               </div>
-              <va-button @click="submit()">
-                Submit
-              </va-button>
+              <va-button @click="submit()"> Submit </va-button>
               <va-button color="warning" @click="$router.push('table-users')"> CANCEL </va-button>
             </va-form>
           </va-card-content>
@@ -118,7 +117,6 @@
   import { ref } from 'vue'
   import { useI18n } from 'vue-i18n'
   import CountriesList from '../forms/data/CountriesList'
-
 
   export default {
     props: {
@@ -187,9 +185,7 @@
     watch: {
       // Watchers
     },
-    created() {
-
-    },
+    created() {},
     mounted() {
       // DOM-related logic
     },
@@ -201,16 +197,27 @@
         }
       },
       submit() {
-        if (this.simple && this.dateInput.from && this.dateInput.to && this.simpleSelectModel && this.multiSelectModel && this.chosenCountry && this.multiSelectCountriesModel && this.searchableSelectModel
-          && this.multiSearchableSelectModel && this.radioSelectedOption && this.checkbox.unselected) {
+        if (
+          this.simple &&
+          this.dateInput.from &&
+          this.dateInput.to &&
+          this.simpleSelectModel &&
+          this.multiSelectModel &&
+          this.chosenCountry &&
+          this.multiSelectCountriesModel &&
+          this.searchableSelectModel &&
+          this.multiSearchableSelectModel &&
+          this.radioSelectedOption &&
+          this.checkbox.unselected
+        ) {
           // Generate a unique identifier for the form data key
-          const formDataKey = 'formData' + Date.now();
+          const formDataKey = 'formData' + Date.now()
 
           // Retrieve existing form data from local storage
-          const savedFormData = localStorage.getItem('formData');
-          let formDataObject = {};
+          const savedFormData = localStorage.getItem('formData')
+          let formDataObject = {}
           if (savedFormData) {
-            formDataObject = JSON.parse(savedFormData);
+            formDataObject = JSON.parse(savedFormData)
           }
 
           // Add the current form data to the object
@@ -225,18 +232,17 @@
             multiSearchableSelectModel: this.multiSearchableSelectModel,
             radioSelectedOption: this.radioSelectedOption,
             checkbox: this.checkbox,
-          };
+          }
 
           // Save the updated form data object in local storage
-          localStorage.setItem('formData', JSON.stringify(formDataObject));
+          localStorage.setItem('formData', JSON.stringify(formDataObject))
 
-          alert('Submit success !!');
-          this.$router.push({ path: 'table-users' });
+          alert('Submit success !!')
+          this.$router.push({ path: 'table-users' })
+        } else {
+          alert('Please submit!!!')
         }
-        else {
-          alert('Please submit!!!');
-        }
-      }
+      },
     },
   }
 </script>

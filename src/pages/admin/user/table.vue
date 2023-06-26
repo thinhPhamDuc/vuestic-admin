@@ -30,7 +30,7 @@
                 <td>{{ formData.chosenCountry }}</td>
                 <td>{{ getMultiSelectDescription(formData.multiSelectModel) }}</td>
                 <td>{{ formData.multiSearchableSelectModel.toString() }}</td>
-<!--                <td> {{formData}}</td>-->
+                <!--                <td> {{formData}}</td>-->
                 <td>
                   <va-collapse>
                     <template #header>
@@ -40,10 +40,14 @@
                       />
                     </template>
                     <div>
-                      <td>{{ formData.simple }}</td><br>
-                      <td>{{ formData.chosenCountry }}</td><br>
-                      <td>{{ getMultiSelectDescription(formData.multiSelectModel) }}</td><br>
-                      <td>{{ formData.multiSearchableSelectModel.toString() }}</td><br>
+                      <td>{{ formData.simple }}</td>
+                      <br />
+                      <td>{{ formData.chosenCountry }}</td>
+                      <br />
+                      <td>{{ getMultiSelectDescription(formData.multiSelectModel) }}</td>
+                      <br />
+                      <td>{{ formData.multiSearchableSelectModel.toString() }}</td>
+                      <br />
                     </div>
                   </va-collapse>
                 </td>
@@ -61,7 +65,7 @@
 
 <script>
   import { useI18n } from 'vue-i18n'
-  import TreeViewBasicPreview from "../ui/tree-view/TreeViewBasicPreview.vue";
+  import TreeViewBasicPreview from '../ui/tree-view/TreeViewBasicPreview.vue'
 
   export default {
     // components: { TreeViewBasicPreview },
@@ -101,7 +105,7 @@
         const formDataJson = localStorage.getItem('formData')
         if (formDataJson) {
           this.savedFormDatas = Object.values(JSON.parse(formDataJson))
-          console.log(this.savedFormDatas);
+          console.log(this.savedFormDatas)
         }
       },
       updateDisplayedItems(page) {
