@@ -8,11 +8,13 @@
           </va-button>
         </template>
         <div class="pa-3">
-          <va-input
-            v-model="simple"
-            placeholder="Text Input"
-            label="Name"
-          />
+          <div class="flex md4 xs12 justify-center">
+            <va-input v-model="search" label="Search" clearable>
+              <template #prependInner>
+                <va-icon class="icon-left input-icon" name="search" />
+              </template>
+            </va-input>
+          </div>
         </div>
       </va-collapse>
       <div class="d-flex" style="top: 0; right: 0;position: absolute">
@@ -74,15 +76,6 @@
   import TreeViewBasicPreview from '../ui/tree-view/TreeViewBasicPreview.vue'
 
   export default {
-    // components: { TreeViewBasicPreview },
-    setup() {
-      const { t } = useI18n()
-      const expanded = [1]
-      return {
-        t,
-        expanded,
-      }
-    },
     data() {
       return {
         itemsPerPage: 5,
@@ -90,17 +83,28 @@
         savedFormDatas: [],
         isOpenA: false,
         isOpenB: false,
-      }
+        search: '',
+      };
     },
     computed: {
       totalPages() {
-        return Math.ceil(this.savedFormDatas.length / this.itemsPerPage)
+        return Math.ceil(this.filteredFormDatas.length / this.itemsPerPage)
+      },
+      filteredFormDatas() {
+        const searchTerm = this.search.toLowerCase().trim();
+        return this.savedFormDatas.filter(formData => {
+          // Filter logic based on search term and relevant properties
+          const simple = formData.simple.toLowerCase();
+          return (
+            simple.includes(searchTerm)
+          );
+        });
       },
       paginatedFormDatas() {
         // currentPage is v-model so it will change
         const startIndex = (this.currentPage - 1) * this.itemsPerPage
         const endIndex = startIndex + this.itemsPerPage
-        return this.savedFormDatas.slice(startIndex, endIndex)
+        return this.filteredFormDatas.slice(startIndex, endIndex)
       },
     },
     created() {
@@ -111,7 +115,6 @@
         const formDataJson = localStorage.getItem('formData')
         if (formDataJson) {
           this.savedFormDatas = Object.values(JSON.parse(formDataJson))
-          console.log(this.savedFormDatas)
         }
       },
       updateDisplayedItems(page) {
@@ -138,13 +141,13 @@
 </script>
 
 <style lang="scss" scoped>
-  .markup-tables {
-    .table-wrapper {
-      overflow: auto;
-    }
-
-    .va-table {
-      width: 100%;
-    }
+.markup-tables {
+  .table-wrapper {
+    overflow: auto;
   }
+
+  .va-table {
+    width: 100%;
+  }
+}
 </style>
