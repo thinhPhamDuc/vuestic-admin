@@ -19,7 +19,7 @@ export default {
       },
     },
     {
-      name: 'table-users',
+      name: 'manage-users',
       displayName: 'menu.user',
       meta: {
         icon: 'vuestic-iconset-dashboard',

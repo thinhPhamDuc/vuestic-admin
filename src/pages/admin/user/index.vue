@@ -1,250 +1,108 @@
 <template>
-  <div class="form-elements">
-    <div class="row">
-      <div class="flex xs12">
-        <va-card>
-          <va-card-title>Form</va-card-title>
-          <va-card-content>
-            <va-form ref="formRef">
-              <div class="flex md4 sm6 xs12">
-                <va-input
-                  v-model="simple"
-                  placeholder="Text Input"
-                  label="Name"
-                  :rules="[(value) => (value && value.length > 0) || 'Name is required']"
-                />
-              </div>
-              <div>
-                <div class="flex md4 sm6 xs12">
-                  <va-date-input
-                    v-model="dateInput.from"
-                    :label="t('forms.dateTimePicker.from')"
-                    :rules="[(v) => validateBirthday(v)]"
-                  />
-                </div>
-                <div class="flex md4 sm6 xs12">
-                  <va-date-input
-                    v-model="dateInput.to"
-                    :label="t('forms.dateTimePicker.to')"
-                    :rules="[(v) => validateBirthday(v)]"
-                  />
-                </div>
-              </div>
-              <div class="flex md6 xs12">
-                <va-select
-                  v-model="simpleSelectModel"
-                  :label="t('forms.selects.simple')"
-                  text-by="description"
-                  track-by="id"
-                  :options="simpleOptions"
-                  :rules="[(value) => value || 'Simple select is required']"
-                />
-              </div>
-              <div class="flex md6 xs12">
-                <va-select
-                  v-model="multiSelectModel"
-                  :label="t('forms.selects.multi')"
-                  text-by="description"
-                  track-by="id"
-                  multiple
-                  :options="simpleOptions"
-                  :rules="[(value) => (value && value.length > 0) || 'Multiple select is required']"
-                />
-              </div>
-              <div class="flex md6 xs12">
-                <va-select
-                  v-model="chosenCountry"
-                  :label="t('forms.selects.country')"
-                  :options="countriesList"
-                  :rules="[(value) => (value && value.length > 0) || 'Country select is required']"
-                />
-              </div>
-              <div class="flex md6 xs12">
-                <va-select
-                  v-model="multiSelectCountriesModel"
-                  :label="t('forms.selects.countryMulti')"
-                  multiple
-                  :options="countriesList"
-                  :rules="[(value) => (value && value.length > 0) || 'Country multiple is required']"
-                />
-              </div>
-              <div class="flex md6 xs12">
-                <va-select
-                  v-model="searchableSelectModel"
-                  :label="t('forms.selects.searchable')"
-                  searchable
-                  text-by="description"
-                  track-by="id"
-                  :options="simpleOptions"
-                  :rules="[(value) => value || 'Country search select is required']"
-                />
-              </div>
-              <div class="flex md6 xs12">
-                <va-select
-                  v-model="multiSearchableSelectModel"
-                  :label="t('forms.selects.searchableMulti')"
-                  text-by="description"
-                  searchable
-                  multiple
-                  :options="countriesList"
-                  :rules="[(value) => (value && value.length > 0) || 'Country multiple search select is required']"
-                />
-              </div>
-              <div class="flex md6 xs12">
-                <fieldset>
-                  <va-radio v-model="radioSelectedOption" option="processing" label="PROCESSING" />
-                  <va-radio v-model="radioSelectedOption" option="rejected" label="REJECTED" />
-                  <va-radio v-model="radioSelectedOption" option="paid" label="PAID" />
-                </fieldset>
-                <va-checkbox
-                  v-model="checkbox.unselected"
-                  label="Please check confirm"
-                  :rules="[(v) => v || 'You must agree with terms and conditions']"
-                  class="d-flex align-items-center text-center mt-2"
-                />
-              </div>
-              <va-button @click="submit()"> Submit </va-button>
-              <va-button color="warning" @click="$router.push('table-users')"> CANCEL </va-button>
-            </va-form>
-          </va-card-content>
-        </va-card>
+  <div class="markup-tables flex">
+    <va-card>
+      <filter-user @passDataSearch="GetData($event)"/>
+      <div class="d-flex" style="top: 0; right: 0; position: absolute">
+        <va-button class="ml-auto mr-4 mt-3" @click="$router.push('add-users')"> {{ t('forms.table.add') }} </va-button>
       </div>
-    </div>
+      <va-tabs v-model="tab" stateful grow>
+        <template #tabs>
+          <va-tab v-for="tab in ['ALL', 'PAID', 'REJECTED', 'PROCESSING']" :key="tab">
+            {{ tab }}
+          </va-tab>
+        </template>
+      </va-tabs>
+      <va-card-content>
+        <table-user :data="paginatedFormDatas"/>
+        <div v-if="totalPages" class="mt-4 d-flex justify-end">
+          <va-pagination v-model="currentPage" :pages="totalPages" @input="updateDisplayedItems" />
+        </div>
+      </va-card-content>
+    </va-card>
   </div>
 </template>
 
 <script>
-  import { ref } from 'vue'
-  import { useI18n } from 'vue-i18n'
-  import CountriesList from '../forms/data/CountriesList'
-
+  import FilterUser from '../filter/filterUser.vue'
+  import TableUser from "./tableUser.vue";
+  import { useI18n } from "vue-i18n";
   export default {
-    props: {
-      // Props definition
-    },
+    components: { TableUser, FilterUser },
     setup() {
       const { t } = useI18n()
-      const dateInput = ref({})
-      const countriesList = ref(CountriesList)
-      const chosenCountry = ref('')
-      const simple = ref('')
-      const withDescription = ref('')
-      const simpleSelectModel = ref('')
-      const multiSelectModel = ref([])
-      const multiSelectCountriesModel = ref([])
-      const searchableSelectModel = ref('')
-      const multiSearchableSelectModel = ref([])
-      const clearableText = ref('Vasili Savitski')
-      const successfulEmail = ref('andrei@dreamsupport.io')
-      const wrongEmail = ref('andrei@dreamsupport')
-      const radioSelectedOption = ref('option1')
-      const messages = ref([
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ' +
-          'incididunt ut labore et dolore magna aliqua.',
-      ])
-      const checkbox = ref({
-        unselected: false,
-      })
-      const errorMessages = ref(['Field should contain a valid email'])
-      const simpleOptions = ref([
-        {
-          id: 1,
-          description: 'First option',
-        },
-        {
-          id: 2,
-          description: 'Second option',
-        },
-        {
-          id: 3,
-          description: 'Third option',
-        },
-      ])
       return {
         t,
-        simpleSelectModel,
-        multiSelectModel,
-        multiSelectCountriesModel,
-        searchableSelectModel,
-        multiSearchableSelectModel,
-        dateInput,
-        countriesList,
-        chosenCountry,
-        simple,
-        withDescription,
-        clearableText,
-        successfulEmail,
-        wrongEmail,
-        messages,
-        errorMessages,
-        simpleOptions,
-        radioSelectedOption,
-        checkbox,
       }
     },
-    watch: {
-      // Watchers
+    data() {
+      return {
+        itemsPerPage: 5,
+        currentPage: 1,
+        savedFormDatas: [],
+        isOpenA: false,
+        isOpenB: false,
+        searching: '',
+        tab: 0,
+      }
     },
-    created() {},
-    mounted() {
-      // DOM-related logic
+    computed: {
+      totalPages() {
+        return Math.ceil(this.filteredFormDatas.length / this.itemsPerPage)
+      },
+      filteredFormDatas() {
+        const searchTerm = this.searching.toLowerCase().trim()
+        const tabcurrent = this.tab
+        return this.savedFormDatas.filter((formData) => {
+          if (!formData.delete) {
+            const simple = formData.simple.toLowerCase()
+            const tabtable = formData.radioSelectedOption
+            if (tabcurrent === 0) {
+              return simple.includes(searchTerm)
+            } else if (tabcurrent === 1) {
+              return tabtable.includes(tabcurrent) && simple.includes(searchTerm)
+            } else if (tabcurrent === 2) {
+              return tabtable.includes(tabcurrent) && simple.includes(searchTerm)
+            } else if (tabcurrent === 3) {
+              return tabtable.includes(tabcurrent) && simple.includes(searchTerm)
+            }
+          }
+        })
+      },
+      paginatedFormDatas() {
+        // currentPage is v-model so it will change
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage
+        const endIndex = startIndex + this.itemsPerPage
+        return this.filteredFormDatas.slice(startIndex, endIndex)
+      },
+    },
+    created() {
+      this.loadFormData()
     },
     methods: {
-      // Component methods
-      validateBirthday(value) {
-        if (!value) {
-          return 'Field is required'
+      loadFormData() {
+        const formDataJson = localStorage.getItem('formData')
+        if (formDataJson) {
+          this.savedFormDatas = Object.values(JSON.parse(formDataJson))
         }
       },
-      submit() {
-        if (
-          this.simple &&
-          this.dateInput.from &&
-          this.dateInput.to &&
-          this.simpleSelectModel &&
-          this.multiSelectModel &&
-          this.chosenCountry &&
-          this.multiSelectCountriesModel &&
-          this.searchableSelectModel &&
-          this.multiSearchableSelectModel &&
-          this.radioSelectedOption &&
-          this.checkbox.unselected
-        ) {
-          // Generate a unique identifier for the form data key
-          const formDataKey = 'formData' + Date.now()
-
-          // Retrieve existing form data from local storage
-          const savedFormData = localStorage.getItem('formData')
-          let formDataObject = {}
-          if (savedFormData) {
-            formDataObject = JSON.parse(savedFormData)
-          }
-
-          // Add the current form data to the object
-          formDataObject[formDataKey] = {
-            simple: this.simple,
-            dateInput: this.dateInput,
-            simpleSelectModel: this.simpleSelectModel,
-            multiSelectModel: this.multiSelectModel,
-            chosenCountry: this.chosenCountry,
-            multiSelectCountriesModel: this.multiSelectCountriesModel,
-            searchableSelectModel: this.searchableSelectModel,
-            multiSearchableSelectModel: this.multiSearchableSelectModel,
-            radioSelectedOption: this.radioSelectedOption,
-            checkbox: this.checkbox,
-          }
-
-          // Save the updated form data object in local storage
-          localStorage.setItem('formData', JSON.stringify(formDataObject))
-
-          alert('Submit success !!')
-          this.$router.push({ path: 'table-users' })
-        } else {
-          alert('Please submit!!!')
-        }
+      GetData(data) {
+        this.searching = data
+      },
+      updateDisplayedItems(page) {
+        this.currentPage = page
       },
     },
   }
 </script>
 
-<style lang="css"></style>
+<style lang="scss" scoped>
+  .markup-tables {
+    .table-wrapper {
+      overflow: auto;
+    }
+
+    .va-table {
+      width: 100%;
+    }
+  }
+</style>

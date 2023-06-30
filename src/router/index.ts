@@ -24,14 +24,19 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/admin/dashboard/Dashboard.vue'),
       },
       {
+        name: 'add-users',
+        path: 'add-users',
+        component: () => import('../pages/admin/user/add.vue'),
+      },
+      {
+        name: 'edit-users',
+        path: 'edit-users',
+        component: () => import('../pages/admin/user/edit.vue'),
+      },
+      {
         name: 'manage-users',
         path: 'manage-users',
         component: () => import('../pages/admin/user/index.vue'),
-      },
-      {
-        name: 'table-users',
-        path: 'table-users',
-        component: () => import('../pages/admin/user/table.vue'),
       },
       {
         name: 'statistics',
