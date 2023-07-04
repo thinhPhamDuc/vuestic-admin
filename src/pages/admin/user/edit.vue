@@ -104,7 +104,9 @@
                 />
               </div>
               <va-button @click="submit()"> Submit </va-button>
-              <va-button color="warning" @click="$router.push('manage-users')"> {{ t('forms.table.cancel') }} </va-button>
+              <va-button color="warning" @click="$router.push('manage-users')">
+                {{ t('forms.table.cancel') }}
+              </va-button>
             </va-form>
           </va-card-content>
         </va-card>

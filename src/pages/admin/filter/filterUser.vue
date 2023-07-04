@@ -34,7 +34,7 @@
     created() {},
     methods: {
       submit() {
-        this.$emit("passDataSearch", this.search);
+        this.$emit('passDataSearch', this.search)
       },
     },
   }
