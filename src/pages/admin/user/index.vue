@@ -1,7 +1,7 @@
 <template>
   <div class="markup-tables flex">
     <va-card>
-      <filter-user @passDataSearch="GetData($event)"/>
+      <filter-user @passDataSearch="GetData($event)" />
       <div class="d-flex" style="top: 0; right: 0; position: absolute">
         <va-button class="ml-auto mr-4 mt-3" @click="$router.push('add-users')"> {{ t('forms.table.add') }} </va-button>
       </div>
@@ -13,7 +13,7 @@
         </template>
       </va-tabs>
       <va-card-content>
-        <table-user :data="paginatedFormDatas"/>
+        <table-user :data="paginatedFormDatas" />
         <div v-if="totalPages" class="mt-4 d-flex justify-end">
           <va-pagination v-model="currentPage" :pages="totalPages" @input="updateDisplayedItems" />
         </div>
@@ -24,8 +24,8 @@
 
 <script>
   import FilterUser from '../filter/filterUser.vue'
-  import TableUser from "./tableUser.vue";
-  import { useI18n } from "vue-i18n";
+  import TableUser from './tableUser.vue'
+  import { useI18n } from 'vue-i18n'
   export default {
     components: { TableUser, FilterUser },
     setup() {

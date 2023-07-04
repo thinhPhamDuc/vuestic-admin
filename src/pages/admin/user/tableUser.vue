@@ -38,7 +38,7 @@
         <div>{{ t('forms.table.delete_confirm') }}</div>
         <template #footer>
           <va-button color="grey" class="mr-2" @click="showModal = false"> {{ t('forms.table.cancel') }} </va-button>
-          <va-button color="warning" @click="forceDelete()"> {{ t('forms.table.delete') }}  </va-button>
+          <va-button color="warning" @click="forceDelete()"> {{ t('forms.table.delete') }} </va-button>
         </template>
       </va-modal>
     </table>
@@ -67,7 +67,7 @@
         this.showModal = !this.showModal
         this.userid = id
       },
-      forceDelete() {
+      forceDelete: function () {
         // for change put to api
         const removeUser = this.userid
         this.data.filter(function (obj) {
