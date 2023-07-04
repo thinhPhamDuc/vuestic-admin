@@ -1,7 +1,7 @@
 <template>
   <div class="markup-tables flex">
     <va-card>
-      <filter-user @passDataSearch="GetData($event)" />
+      <filter-user @passDataSearch="GetData($event)" @passDate="GetDate($event)" />
       <div class="d-flex" style="top: 0; right: 0; position: absolute">
         <va-button class="ml-auto mr-4 mt-3" @click="$router.push('add-users')"> {{ t('forms.table.add') }} </va-button>
       </div>
@@ -19,6 +19,8 @@
         </div>
       </va-card-content>
     </va-card>
+    <va-button v-show="false" id="button" class="mr-2 mb-2" @click=""> Basic notification </va-button>
+    <va-button v-show="false" id="button" class="mr-2 mb-2" @click="handleButtonClick"> Basic notification </va-button>
   </div>
 </template>
 
@@ -26,23 +28,38 @@
   import FilterUser from '../filter/filterUser.vue'
   import TableUser from './tableUser.vue'
   import { useI18n } from 'vue-i18n'
+  import { useColors, useToast } from 'vuestic-ui'
+  import { ref, onMounted } from 'vue'
+  import axios from 'axios'
   export default {
     components: { TableUser, FilterUser },
     setup() {
       const { t } = useI18n()
+      const color = ref(null)
+      const initToast = ref(null)
+      onMounted(() => {
+        const { color: colorFunc } = useColors()
+        const { init: initToastFunc } = useToast()
+        color.value = colorFunc
+        initToast.value = initToastFunc
+      })
       return {
         t,
+        initToast,
       }
     },
     data() {
       return {
-        itemsPerPage: 5,
+        itemsPerPage: 10,
         currentPage: 1,
         savedFormDatas: [],
         isOpenA: false,
         isOpenB: false,
         searching: '',
         tab: 0,
+        from: '',
+        to: '',
+        fact: '',
       }
     },
     computed: {
@@ -52,20 +69,29 @@
       filteredFormDatas() {
         const searchTerm = this.searching.toLowerCase().trim()
         const tabcurrent = this.tab
+        const from = this.from
+        const to = this.to
+
         return this.savedFormDatas.filter((formData) => {
-          if (!formData.delete) {
-            const simple = formData.simple.toLowerCase()
-            const tabtable = formData.radioSelectedOption
-            if (tabcurrent === 0) {
-              return simple.includes(searchTerm)
-            } else if (tabcurrent === 1) {
-              return tabtable.includes(tabcurrent) && simple.includes(searchTerm)
-            } else if (tabcurrent === 2) {
-              return tabtable.includes(tabcurrent) && simple.includes(searchTerm)
-            } else if (tabcurrent === 3) {
-              return tabtable.includes(tabcurrent) && simple.includes(searchTerm)
-            }
+          if (formData.delete) {
+            return false
           }
+
+          const simple = formData.simple.toLowerCase()
+          const tabtable = formData.radioSelectedOption
+          const dateFrom = new Date(formData.dateInput.from).toString()
+          const dateTo = new Date(formData.dateInput.to).toString()
+
+          if (tabcurrent === 0) {
+            return simple.includes(searchTerm) && dateFrom.includes(from) && dateTo.includes(to)
+          }
+
+          return (
+            tabtable.includes(tabcurrent) &&
+            simple.includes(searchTerm) &&
+            dateFrom.includes(from) &&
+            dateTo.includes(to)
+          )
         })
       },
       paginatedFormDatas() {
@@ -75,10 +101,32 @@
         return this.filteredFormDatas.slice(startIndex, endIndex)
       },
     },
+    watch: {
+      tab(newValue, oldValue) {
+        if (newValue !== oldValue) {
+          this.currentPage = 1
+          this.updateDisplayedItems(this.currentPage)
+        }
+      },
+    },
     created() {
       this.loadFormData()
+      this.getDataFactCat()
+      setInterval(this.getDataFactCat, 5000) // Call getData() every 3 seconds
+      setInterval(this.handleButtonClick, 5000)
     },
     methods: {
+      handleButtonClick() {
+        this.initToast({ message: this.fact.fact, color: this.color })
+      },
+      async getDataFactCat() {
+        try {
+          let response = await fetch('https://catfact.ninja/fact')
+          this.fact = await response.json()
+        } catch (error) {
+          console.log(error)
+        }
+      },
       loadFormData() {
         const formDataJson = localStorage.getItem('formData')
         if (formDataJson) {
@@ -86,7 +134,12 @@
         }
       },
       GetData(data) {
+        console.log(data)
         this.searching = data
+      },
+      GetDate(data) {
+        this.from = data[0]
+        this.to = data[1]
       },
       updateDisplayedItems(page) {
         this.currentPage = page

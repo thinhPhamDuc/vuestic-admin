@@ -71,7 +71,7 @@
     return lineMapData.cities.map(({ title, country }) => ({ text: title, country }))
   })
 
-  const allowedCitiesList = ref<typeof citiesList['value']>([])
+  const allowedCitiesList = ref<(typeof citiesList)['value']>([])
 
   const computedStylesTitle = computed(() => ({ color: colors.dark }))
 

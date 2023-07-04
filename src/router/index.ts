@@ -39,6 +39,16 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/admin/user/index.vue'),
       },
       {
+        name: 'manage-weather',
+        path: 'manage-weather',
+        component: () => import('../pages/admin/weather/index.vue'),
+      },
+      {
+        name: 'manage-movies',
+        path: 'manage-movies',
+        component: () => import('../pages/admin/movies/index.vue'),
+      },
+      {
         name: 'statistics',
         path: 'statistics',
         component: RouteViewComponent,

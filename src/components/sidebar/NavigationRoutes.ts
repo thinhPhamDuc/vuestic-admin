@@ -26,6 +26,20 @@ export default {
       },
     },
     {
+      name: 'manage-weather',
+      displayName: 'menu.weather',
+      meta: {
+        icon: 'vuestic-iconset-dashboard',
+      },
+    },
+    {
+      name: 'manage-movies',
+      displayName: 'menu.movies',
+      meta: {
+        icon: 'vuestic-iconset-dashboard',
+      },
+    },
+    {
       name: 'statistics',
       displayName: 'menu.statistics',
       meta: {

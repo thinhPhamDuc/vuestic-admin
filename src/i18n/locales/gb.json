@@ -272,7 +272,9 @@
       "delete": "DELETE",
       "cancel": "CANCEL",
       "delete_user": "Delete users",
-      "delete_confirm": "Do you want to delete this users ?"
+      "delete_confirm": "Do you want to delete this users ?",
+      "from": "From date",
+      "to": "End date"
     },
     "selects": {
       "country": "Country Select",
@@ -310,6 +312,8 @@
   "menu": {
     "auth": "Auth",
     "user": "Manage users",
+    "weather": "Manage countries",
+    "movies": "Manage movies",
     "rating": "Rating",
     "buttons": "Buttons",
     "charts": "Charts",

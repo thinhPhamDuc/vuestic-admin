@@ -246,8 +246,8 @@
           // Save the updated form data object in local storage
           localStorage.setItem('formData', JSON.stringify(formDataObject))
 
-          // alert('Submit success !!')
-          // this.$router.push({ path: 'manage-users' })
+          alert('Submit success !!')
+          this.$router.push({ path: 'manage-users' })
         } else {
           alert('Please submit!!!')
         }

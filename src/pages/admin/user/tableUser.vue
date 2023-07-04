@@ -7,6 +7,8 @@
           <th>{{ t('forms.table.chosen_country') }}</th>
           <th>{{ t('forms.table.multi_select_model') }}</th>
           <th>{{ t('forms.table.multi_search_select_model') }}</th>
+          <th>{{ t('forms.table.from') }}</th>
+          <th>{{ t('forms.table.to') }}</th>
           <th>{{ t('forms.table.status') }}</th>
           <th>{{ t('forms.table.action') }}</th>
         </tr>
@@ -17,6 +19,8 @@
           <td>{{ formData.chosenCountry }}</td>
           <td>{{ getMultiSelectDescription(formData.multiSelectModel) }}</td>
           <td>{{ formData.multiSearchableSelectModel.toString() }}</td>
+          <td>{{ formData.dateInput.from }}</td>
+          <td>{{ formData.dateInput.to }}</td>
           <td>
             <va-badge
               :text="getText(formData.radioSelectedOption)"
