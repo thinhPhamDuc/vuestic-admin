@@ -19,7 +19,6 @@
         </div>
       </va-card-content>
     </va-card>
-    <va-button v-show="false" id="button" class="mr-2 mb-2" @click=""> Basic notification </va-button>
     <va-button v-show="false" id="button" class="mr-2 mb-2" @click="handleButtonClick"> Basic notification </va-button>
   </div>
 </template>
@@ -112,7 +111,7 @@
     created() {
       this.loadFormData()
       this.getDataFactCat()
-      setInterval(this.getDataFactCat, 5000) // Call getData() every 3 seconds
+      setInterval(this.getDataFactCat, 5000)
       setInterval(this.handleButtonClick, 5000)
     },
     methods: {
