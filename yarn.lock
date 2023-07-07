@@ -3654,6 +3654,11 @@
     "@vue/server-renderer" "3.3.4"
     "@vue/shared" "3.3.4"
 
+"vuejs-paginate@^2.1.0":
+  "integrity" "sha512-gnwyXlmCiDOu9MLWxN5UJ4PGijKGNOMpHG8ujsrynCzTJljn/rp7Jq0WiDGDAMi5/u0AHuYIHhced+tUW4jblA=="
+  "resolved" "https://registry.npmjs.org/vuejs-paginate/-/vuejs-paginate-2.1.0.tgz"
+  "version" "2.1.0"
+
 "vuelidate@^0.7.7":
   "integrity" "sha512-pT/U2lDI67wkIqI4tum7cMSIfGcAMfB+Phtqh2ttdXURwvHRBJEAQ0tVbUsW9Upg83Q5QH59bnCoXI7A9JDGnA=="
   "resolved" "https://registry.npmjs.org/vuelidate/-/vuelidate-0.7.7.tgz"

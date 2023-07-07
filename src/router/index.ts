@@ -49,6 +49,16 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/admin/movies/index.vue'),
       },
       {
+        name: 'manage-character-harry-potter',
+        path: 'manage-character-harry-potter',
+        component: () => import('../pages/admin/character/index.vue'),
+      },
+      {
+        name: 'details/:id',
+        path: 'details/:id',
+        component: () => import('../pages/admin/character/details.vue'),
+      },
+      {
         name: 'statistics',
         path: 'statistics',
         component: RouteViewComponent,
