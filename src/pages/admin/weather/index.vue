@@ -81,7 +81,7 @@
       return {
         simpleSelectModel: '',
         dataCorrect: '',
-        dataCorrectSchool: ''
+        dataCorrectSchool: '',
       }
     },
     computed: {},
@@ -140,7 +140,7 @@
         this.dataCorrectSchool = this.removeDuplicates(Array.from(data))
       },
       removeDuplicates(array) {
-        return Array.from(new Set(array.map(JSON.stringify))).map(JSON.parse);
+        return Array.from(new Set(array.map(JSON.stringify))).map(JSON.parse)
       },
       functionGetDataCorrectListCountry(data) {
         this.simpleOptions = data
