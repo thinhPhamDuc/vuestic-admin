@@ -40,6 +40,13 @@ export default {
       },
     },
     {
+      name: 'manage-character-harry-potter',
+      displayName: 'menu.harrypotter',
+      meta: {
+        icon: 'vuestic-iconset-dashboard',
+      },
+    },
+    {
       name: 'statistics',
       displayName: 'menu.statistics',
       meta: {
