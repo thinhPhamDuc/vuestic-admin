@@ -17,7 +17,7 @@
         <tr v-for="formData in pageItems" :key="formData.id">
           <td>{{ formData.id }}</td>
           <td>
-            <img :src=formData.image width="100" height="100"/>
+            <img :src="formData.image" width="100" height="100" />
           </td>
           <td>{{ formData.name }}</td>
           <td>{{ formData.alternate_names }}</td>
@@ -32,7 +32,7 @@
         </tr>
       </tbody>
     </table>
-    <va-pagination v-model="currentPage" :pages="calculateTotalPages" @input="updateDisplayedItems" input/>
+    <va-pagination v-model="currentPage" :pages="calculateTotalPages" input @input="updateDisplayedItems" />
   </div>
 </template>
 
@@ -60,8 +60,8 @@
     },
     computed: {
       calculateTotalPages() {
-        console.log('total pages', Math.ceil(this.dataCharacter.length / this.itemsPerPage));
-        return Math.ceil(this.dataCharacter.length / this.itemsPerPage);
+        console.log('total pages', Math.ceil(this.dataCharacter.length / this.itemsPerPage))
+        return Math.ceil(this.dataCharacter.length / this.itemsPerPage)
       },
     },
     watch: {
@@ -88,7 +88,7 @@
         this.pageItems = this.dataCharacter.slice(startIndex, endIndex)
       },
       async handleDetail(id) {
-        this.$router.push(`details/${id}`);
+        this.$router.push(`details/${id}`)
       },
     },
   }

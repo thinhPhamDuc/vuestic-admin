@@ -119,7 +119,7 @@
         this.currentPage = page
       },
       async handleDetail(id) {
-        this.$router.push(`detailsMovie/${id}`);
+        this.$router.push(`detailsMovie/${id}`)
       },
     },
   }

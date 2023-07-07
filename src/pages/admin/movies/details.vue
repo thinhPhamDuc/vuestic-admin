@@ -41,7 +41,7 @@
       </tbody>
     </table>
     <h1>Cast :</h1>
-    <table class="va-table va-table--striped va-table--hoverable w--10">
+    <table class="va-table va-table--striped va-table--hoverable">
       <thead>
         <tr>
           <th>Name</th>
@@ -51,7 +51,10 @@
       </thead>
       <tbody>
         <tr v-for="formData in dataCredit.cast" :key="formData.id">
-          <td>{{ formData.character }}</td>
+          <td>
+            <div @click="handleDetail(formData.id)">{{ formData.character }}</div>
+          </td>
+          <td>{{formData.id}}</td>
           <td>{{ formData.original_name }}</td>
           <td>
             <img
@@ -150,11 +153,12 @@
         try {
           const response = await axios.request(options)
           this.dataCredit = response.data
-          console.log('asasdasdasd')
-          console.log(this.dataCredit)
         } catch (error) {
           console.error(error)
         }
+      },
+      async handleDetail(id) {
+        this.$router.push(`/detailsCharacter/${id}`)
       },
     },
   }

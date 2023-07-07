@@ -59,9 +59,14 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/admin/character/details.vue'),
       },
       {
-      name: 'detailsMovie/:id',
-      path: 'detailsMovie/:id',
-      component: () => import('../pages/admin/movies/details.vue'),
+        name: '/detailsCharacter/:id',
+        path: '/detailsCharacter/:id',
+        component: () => import('../pages/admin/movies/detailsCharacter.vue'),
+      },
+      {
+        name: 'detailsMovie/:id',
+        path: 'detailsMovie/:id',
+        component: () => import('../pages/admin/movies/details.vue'),
       },
       {
         name: 'statistics',
