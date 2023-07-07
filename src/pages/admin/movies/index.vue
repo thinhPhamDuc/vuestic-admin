@@ -1,25 +1,24 @@
 <template>
   <div class="pa-3">
     <div class="flex md4 xs12 justify-center">
-      <va-input v-model="search" label="Search" @keyup="submit">
+      <va-input v-model="search" label="Search">
         <template #prependInner>
           <va-icon class="icon-left input-icon" name="search" />
         </template>
       </va-input>
+      <va-button color="info" class="mr-2 mt-2" @click="submit(search)"> Filter Date </va-button>
     </div>
   </div>
   <div class="table-wrapper">
     <table class="va-table va-table--striped va-table--hoverable w--10">
       <thead>
         <tr>
-          <th>Image original</th>
-          <th>Name</th>
-          <th>Language</th>
-          <th>Genres</th>
-          <th>Status</th>
-          <th>Ended</th>
-          <th>Rating</th>
-          <th>Summary</th>
+          <th>Images</th>
+          <th>original_language</th>
+          <th>original_title</th>
+          <th>overview</th>
+          <th>release_date</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -30,32 +29,36 @@
           <td>
             <img
               :src="
-                formData.show.image
-                  ? formData.show.image.original
+                formData.poster_path
+                  ? 'https://image.tmdb.org/t/p/w500' + formData.poster_path
                   : 'https://w7.pngwing.com/pngs/116/765/png-transparent-clapperboard-computer-icons-film-movie-poster-angle-text-logo-thumbnail.png'
               "
               width="100"
               height="100"
             />
           </td>
-          <td>{{ formData.show.name }}</td>
-          <td>{{ formData.show.language }}</td>
-          <td>{{ formData.show.genres[0] }}</td>
-          <td>{{ formData.show.status }}</td>
-          <td>{{ formData.show.ended }}</td>
-          <td>{{ formData.show.rating.average }}</td>
-          <td id="artDesc" class="art__desc">
-            {{ changeDescription(formData.show.summary) }}
+          <td>{{ formData.original_language }}</td>
+          <td>{{ formData.original_title }}</td>
+          <td>{{ formData.overview }}</td>
+          <td>{{ formData.release_date }}</td>
+          <td>
+            <va-button color="info" class="mr-2" @click="handleDetail(formData.id)">
+              {{ t('forms.table.edit') }}
+            </va-button>
           </td>
         </tr>
       </tbody>
     </table>
+    <div v-if="totalPages" class="mt-4 d-flex justify-end">
+      <va-pagination v-model="currentPage" :pages="totalPages" @input="updateDisplayedItems" />
+    </div>
   </div>
 </template>
 
 <script>
   import { useI18n } from 'vue-i18n'
   import { ref, onMounted } from 'vue'
+  import axios from 'axios'
   export default {
     setup() {
       const { t } = useI18n()
@@ -69,35 +72,54 @@
       return {
         search: '',
         dataMovies: [],
+        currentPage: 1,
+        totalPages: '',
       }
     },
     computed: {},
-    watch: {},
+    watch: {
+      currentPage(newPage) {
+        this.updateDisplayedItems(newPage)
+        // Call the method to fetch and display movies based on the updated current page
+        this.getDataInfoMovie(this.search)
+      },
+    },
     async created() {},
     methods: {
-      async submit() {
-        await this.getDataInfoMovie(this.search)
+      async submit(data) {
+        await this.getDataInfoMovie(data)
       },
       async getDataInfoMovie(movies) {
+        const options = {
+          method: 'GET',
+          url: 'https://api.themoviedb.org/3/search/movie',
+          params: {
+            query: movies,
+            include_adult: 'false',
+            language: 'en-US',
+            page: this.currentPage,
+          },
+          headers: {
+            accept: 'application/json',
+            Authorization:
+              'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlZDgxYWE1NWRlYzMxZDc3ZWUyMGI3Mzk4NmU5OWU3NCIsInN1YiI6IjY0YTc4M2RiYWYyZGE4MDEwY2FkNzEzNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.53X7wnT94JljrVmYbr4diBGiYNdu4nh4nGubE1acxjc',
+          },
+        }
+
         try {
-          let response = await fetch('https://api.tvmaze.com/search/shows?q=' + movies)
-          const data = response.json()
-          const promiseData = Promise.resolve(data)
-          promiseData.then((value) => {
-            this.functionGetDataCorrect(value)
-          })
+          const response = await axios.request(options)
+          console.log('response.data', response.data)
+          this.totalPages = response.data.total_pages
+          this.dataMovies = response.data.results
         } catch (error) {
-          console.log(error)
+          console.error(error)
         }
       },
-      functionGetDataCorrect(data) {
-        this.dataMovies = data
+      updateDisplayedItems(page) {
+        this.currentPage = page
       },
-      changeDescription(description) {
-        const htmlString = description
-        const temporaryElement = document.createElement('div')
-        temporaryElement.innerHTML = htmlString
-        return temporaryElement.textContent || temporaryElement.innerText
+      async handleDetail(id) {
+        this.$router.push(`detailsMovie/${id}`);
       },
     },
   }
