@@ -5,6 +5,12 @@
       <div class="d-flex" style="top: 0; right: 0; position: absolute">
         <va-button class="ml-auto mr-4 mt-3" @click="$router.push('add-users')"> {{ t('forms.table.add') }} </va-button>
       </div>
+      <va-card>
+        <va-card-title>{{ t('fileUpload.advancedUploadList') }}</va-card-title>
+        <va-card-content>
+          <input type="file" @change="onChange" />
+        </va-card-content>
+      </va-card>
       <va-tabs v-model="tab" stateful grow>
         <template #tabs>
           <va-tab v-for="tab in ['ALL', 'PAID', 'REJECTED', 'PROCESSING']" :key="tab">
@@ -31,6 +37,8 @@
   import { useColors, useToast } from 'vuestic-ui'
   import { ref, onMounted } from 'vue'
   import axios from 'axios'
+  import * as XLSX from 'xlsx/xlsx.mjs'
+  import { JSONParser } from "@amcharts/amcharts5";
   export default {
     components: { TableUser, FilterUser },
     setup() {
@@ -50,6 +58,7 @@
     },
     data() {
       return {
+        advancedList: '',
         itemsPerPage: 10,
         currentPage: 1,
         savedFormDatas: [],
@@ -111,11 +120,48 @@
     },
     created() {
       this.loadFormData()
-      this.getDataFactCat()
-      setInterval(this.getDataFactCat, 5000) // Call getData() every 3 seconds
-      setInterval(this.handleButtonClick, 5000)
+      // this.getDataFactCat()
+      // setInterval(this.getDataFactCat, 5000) // Call getData() every 3 seconds
+      // setInterval(this.handleButtonClick, 5000)
     },
     methods: {
+      onChange(event) {
+        this.file = event.target.files ? event.target.files[0] : null;
+        if (this.file) {
+          const reader = new FileReader();
+
+          reader.onload = (e) => {
+            /* Parse data */
+            const bstr = e.target.result;
+            const wb = XLSX.read(bstr, { type: 'binary' });
+            /* Get first worksheet */
+            const wsname = wb.SheetNames[0];
+            const ws = wb.Sheets[wsname];
+            /* Convert array of arrays */
+            const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+            // console.log(data);
+            const filtered = data.filter(function (el) {
+              return el.length !== 0
+            })
+            const transformedItem = filtered.map(item => {
+              const transformedItem = {}
+              item.forEach((value,key) => {
+                transformedItem[key] = value
+              })
+              return transformedItem
+            })
+            console.log(transformedItem);
+          }
+
+          reader.readAsBinaryString(this.file);
+        }
+      },
+      isFamilyName(fruit) {
+        return fruit[0] === "family name";
+      },
+      isCountryCity(fruit) {
+        return fruit[0] === "Country of Citizenship";
+      },
       handleButtonClick() {
         this.initToast({ message: this.fact.fact, color: this.color })
       },
