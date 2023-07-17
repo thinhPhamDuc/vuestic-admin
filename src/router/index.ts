@@ -39,6 +39,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/admin/user/index.vue'),
       },
       {
+        name: 'manage-products',
+        path: 'manage-products',
+        component: () => import('../pages/admin/product/index.vue'),
+      },
+      {
         name: 'manage-weather',
         path: 'manage-weather',
         component: () => import('../pages/admin/weather/index.vue'),

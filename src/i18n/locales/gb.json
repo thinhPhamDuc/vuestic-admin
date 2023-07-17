@@ -311,6 +311,7 @@
   },
   "menu": {
     "auth": "Auth",
+    "products": "Manage Products",
     "user": "Manage users",
     "weather": "Manage countries",
     "movies": "Manage movies",

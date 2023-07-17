@@ -47,6 +47,13 @@ export default {
       },
     },
     {
+      name: 'manage-products',
+      displayName: 'menu.products',
+      meta: {
+        icon: 'vuestic-iconset-dashboard',
+      },
+    },
+    {
       name: 'statistics',
       displayName: 'menu.statistics',
       meta: {
