@@ -90,6 +90,7 @@
         await this.getDataInfoMovie(data)
       },
       async getDataInfoMovie(movies) {
+        console.log('121212121212');
         const options = {
           method: 'GET',
           url: 'https://api.themoviedb.org/3/search/movie',

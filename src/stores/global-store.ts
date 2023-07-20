@@ -1,11 +1,16 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
 export const useGlobalStore = defineStore('global', {
-  state: () => {
-    return {
-      isSidebarMinimized: false,
-      userName: 'Vasili S',
-    }
+  state: () => ({
+    isSidebarMinimized: false,
+    userName: 'Vasili S',
+    token: localStorage.getItem('token') || null, // Retrieve the token from localStorage (if exists)
+  }),
+
+  getters: {
+    getToken(state) {
+      return state.token;
+    },
   },
 
   actions: {
@@ -16,5 +21,14 @@ export const useGlobalStore = defineStore('global', {
     changeUserName(userName: string) {
       this.userName = userName
     },
+    setToken(token) {
+      this.token = token;
+      localStorage.setItem('token', token); // Save the token to localStorage
+    },
+
+    clearToken() {
+      this.token = null;
+      localStorage.removeItem('token'); // Remove the token from localStorage
+    },
   },
-})
+});

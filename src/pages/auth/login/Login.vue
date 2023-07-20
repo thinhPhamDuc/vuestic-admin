@@ -5,8 +5,6 @@
       class="mb-3"
       type="email"
       :label="t('auth.email')"
-      :error="!!emailErrors.length"
-      :error-messages="emailErrors"
     />
 
     <va-input
@@ -14,8 +12,6 @@
       class="mb-3"
       type="password"
       :label="t('auth.password')"
-      :error="!!passwordErrors.length"
-      :error-messages="passwordErrors"
     />
 
     <div class="auth-layout__options d-flex align-center justify-space-between">
@@ -31,27 +27,78 @@
   </form>
 </template>
 
-<script setup lang="ts">
-  import { computed, ref } from 'vue'
-  import { useRouter } from 'vue-router'
+<script>
   import { useI18n } from 'vue-i18n'
-  const { t } = useI18n()
+  import { ref, onMounted } from 'vue'
+  import { useGlobalStore } from '../../../stores/global-store'
+  export default {
+    components: { },
+    setup() {
+      const { t } = useI18n()
+      onMounted(() => {
+      })
+      return {
+        t,
+      }
+    },
+    data() {
+      return {
+        email: '',
+        password: '',
+        keepLoggedIn: false
+      }
+    },
+    computed: {
+    },
+    watch: {
+      
+    },
+    created() {
+      // Access the Pinia store instance
+      const store = useGlobalStore();
+      // Retrieve the token from localStorage on page load
+      const tokenFromStorage = localStorage.getItem('token');
+      if (tokenFromStorage) {
+        // If token exists in localStorage, set it in the store
+        store.setToken(tokenFromStorage);
+      } else {
+        // If token does not exist in localStorage, clear it from the store
+        store.clearToken();
+      }
+    },
+    methods: {
+      onsubmit() {
+        if (this.email && this.password) {
+          var myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
 
-  const email = ref('')
-  const password = ref('')
-  const keepLoggedIn = ref(false)
-  const emailErrors = ref<string[]>([])
-  const passwordErrors = ref<string[]>([])
-  const router = useRouter()
+          var raw = JSON.stringify({
+            "password": this.password,
+            "name": this.email
+          });
 
-  const formReady = computed(() => !emailErrors.value.length && !passwordErrors.value.length)
+          var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+          };
 
-  function onsubmit() {
-    if (!formReady.value) return
-
-    emailErrors.value = email.value ? [] : ['Email is required']
-    passwordErrors.value = password.value ? [] : ['Password is required']
-
-    router.push({ name: 'dashboard' })
+          fetch("https://nodeapi-mongo.onrender.com/api/admin/login", requestOptions)
+          .then(response => response.json())
+          .then(data => {
+            const token = data.token;
+            // Access the Pinia store instance
+            console.log(token);
+            const store = useGlobalStore();
+            // Call the action to set the token
+            store.setToken(token);
+            // Redirect to the dashboard or any other logic you need after successful login
+            this.$router.push('/dashboard'); // Replace '/dashboard' with your dashboard route path
+          })
+          .catch(error => console.log('error', error));
+        }
+      }
+    },
   }
 </script>

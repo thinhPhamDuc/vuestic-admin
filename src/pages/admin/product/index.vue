@@ -1,48 +1,21 @@
 <template>
-    <div class="pa-3">
-      <div class="flex md4 xs12 justify-center">
-        <va-input v-model="search" label="Search">
-          <template #prependInner>
-            <va-icon class="icon-left input-icon" name="search" />
-          </template>
-        </va-input>
-        <va-button color="info" class="mr-2 mt-2" @click="submit(search)"> Filter Date </va-button>
-      </div>
-    </div>
     <div class="table-wrapper">
       <table class="va-table va-table--striped va-table--hoverable w--10">
         <thead>
           <tr>
-            <th>Images</th>
-            <th>original_language</th>
-            <th>original_title</th>
-            <th>overview</th>
-            <th>release_date</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <h1 v-if="dataMovies.length === 0">There are no data match right now!!!</h1>
-          </tr>
-          <tr v-for="formData in dataMovies" :key="formData.id">
+          <tr v-for="product in products" :key="product.id">
+            <td>{{ product.name }}</td>   
+            <td>{{ product.price }}</td> 
+            <td>{{ product.quantity }}</td> 
             <td>
-              <img
-                :src="
-                  formData.poster_path
-                    ? 'https://image.tmdb.org/t/p/w500' + formData.poster_path
-                    : 'https://w7.pngwing.com/pngs/116/765/png-transparent-clapperboard-computer-icons-film-movie-poster-angle-text-logo-thumbnail.png'
-                "
-                width="100"
-                height="100"
-              />
-            </td>
-            <td>{{ formData.original_language }}</td>
-            <td>{{ formData.original_title }}</td>
-            <td>{{ formData.overview }}</td>
-            <td>{{ formData.release_date }}</td>
-            <td>
-              <va-button color="info" class="mr-2" @click="handleDetail(formData.id)">
+              <va-button color="info" class="mr-2" @click="handleDetail(product._id)">
                 {{ t('forms.table.edit') }}
               </va-button>
             </td>
@@ -58,6 +31,7 @@
   <script>
     import { useI18n } from 'vue-i18n'
     import { ref, onMounted } from 'vue'
+    import { useGlobalStore } from '../../../stores/global-store'
     export default {
       setup() {
         const { t } = useI18n()
@@ -69,16 +43,51 @@
       },
       data() {
         return {
-          
+          currentPage: 1,
+          totalPages: '',
+          products: [],
+          limit : 5
         }
       },
       computed: {},
-      watch: {
-        
+      async created() {
+        await this.fetchData()
       },
-      async created() {},
+      watch: {
+        currentPage(newPage) {
+          this.updateDisplayedItems(newPage)
+          this.fetchData()
+        },
+      },
       methods: {
-        
+        async fetchData() {
+          var myHeaders = new Headers();
+          const store = useGlobalStore();
+          const tokenFromStore =  "Bearer " + store.getToken;
+          myHeaders.append("Authorization", tokenFromStore);
+
+          var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+          };
+
+          console.log('fetch data');
+          const url = "https://nodeapi-mongo.onrender.com/api/admin/product?page=" + (this.currentPage-1) + "&limit=" + this.limit
+          fetch(url, requestOptions)
+            .then(response => response.text())
+            .then(data => {
+              this.products = JSON.parse(data).product
+              this.totalPages = (JSON.parse(data).total / this.limit).toFixed()
+            })
+            .catch(error => console.log('error', error));
+        },
+        updateDisplayedItems(page) {
+          this.currentPage = page
+        },
+        async handleDetail(id) {
+          this.$router.push(`detailsProducts/${id}`)
+        },
       },
     }
   </script>
